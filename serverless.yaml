@@ -22,7 +22,7 @@ functions:
     handler: index.handler
     name: RossumCustomSkill
     runtime: nodejs8.10
-    timeout: 60
+    timeout: 120
     events:
       - http:
           method: POST

@@ -10,14 +10,14 @@ const TEMP_PATH = '/tmp/temp.pdf'
 
 class Box {
 
-  constructor(readToken, writeToken, fileId, body) {
-    this.filesReader = new FilesReader(body);
-    const fileContext = this.filesReader.getFileContext();
-    this.skillsWriter = new SkillsWriter(fileContext);
+  constructor(fileInfo) {
+    this.filesReader = new FilesReader(fileInfo);
+    this.skillsWriter = new SkillsWriter(this.filesReader.getFileContext());
 
-    this.readToken = readToken;
-    this.writeToken = writeToken;
-    this.fileId = fileId
+    const { source, token } = JSON.parse(fileInfo);
+    this.fileId = source.id;
+    this.readToken = token.read.access_token;
+    this.writeToken = token.write.access_token;
     this.boxSdk = new BoxSDK({ clientID: 'u9ycy4t2d2u0yq078zn0vaemprqqwcn3', clientSecret: 'k5nbP2WzwothXXtrmZJPYY9RtxyTKLzm' });
   }
 
@@ -37,7 +37,6 @@ class Box {
       if(metadata.cards) {
         hasMetadata = true;
       }
-      console.log(hasMetadata);
     } catch(error) {
       console.log("Skills metadata does not yet exist");
     }
@@ -54,10 +53,8 @@ class Box {
    * @return {Object} - new document object
    */
   async downloadFileFromBox() {
-    const readClient = this.boxSdk.getBasicClient(this.readToken);
-
     // get box file read stream and write to local temp file
-    const readStream = await readClient.files.getReadStream(this.fileId, null);
+    const readStream = await this.filesReader.getContentStream();
     const writeStream = fs.createWriteStream(TEMP_PATH);
     const stream = readStream.pipe(writeStream);
 
@@ -75,10 +72,7 @@ class Box {
    * Attach skills metadata to file
    */
   async attachMetadataCard(rossumJson) {
-    // const client = this.boxSdk.getBasicClient(this.writeToken);
-    
-    // let boxSkillsCard = { "cards": [] };
-
+ 
     // Invoice information card
     const invoiceDetails = returnCard("Invoice Details", rossumJson,
       {
@@ -99,11 +93,6 @@ class Box {
 
     const transcriptJSON = this.skillsWriter.createTranscriptsCard(invoiceDetails);
     this.skillsWriter.saveDataCards([transcriptJSON]);
-    
-  //   boxSkillsCard.cards.push(invoiceDetails);
-
-  //   // add skills metadata cards to box file
-  //   return await client.files.addMetadata(this.fileId, client.metadata.scopes.GLOBAL, SKILLS_CARDS_TEMPLATE, boxSkillsCard);
   }
 }
 
@@ -115,19 +104,6 @@ class Box {
  * @return {Object} - new document object
  */
 function returnCard(keywordTitle, rossumJson, properties) {
-  // let cardTemplate = {
-  //   type: "skill_card",
-  //   skill_card_type: "transcript",
-  //   skill_card_title: {message: keywordTitle},
-  //   skill: {
-  //     type: "service", "id": BOX_SKILL_NAME
-  //   },
-  //   invocation: {
-  //     type: "skill_invocation", id: "b6d9c9f05a"
-  //   },
-  //   duration: 945,
-  //   entries: []
-  // }
   const entries = [];
 
   // push metadata to cardTemplate entries
@@ -140,7 +116,6 @@ function returnCard(keywordTitle, rossumJson, properties) {
     }
   });
 
-  // return cardTemplate
   return entries;
 }
 

@@ -36,8 +36,7 @@ function isValidEvent() {
 async function processEvent() {
 
   const { body } = triggeredEvent;
-  const { source, token } = JSON.parse(body);
-  const box = new Box(token.read.access_token, token.write.access_token, source.id, body);
+  const box = new Box(body);
 
   try {
       // check if the file in question already has skills metadata attached
