@@ -1,9 +1,7 @@
 
+const fs = require('fs')
 const BoxSDK = require('box-node-sdk');
 const { FilesReader, SkillsWriter } = require('../skills-kit-lib/skills-kit-2.0');
-
-const fs = require('fs')
-
 const SKILLS_CARDS_TEMPLATE = 'boxSkillsCards';
 const BOX_SKILL_NAME = 'CustomBoxInvoiceSkill';
 const TEMP_PATH = '/tmp/temp.pdf'
@@ -21,7 +19,7 @@ class Box {
   }
 
   /**
-   * Check if file already has skills metadata attached
+   * Check if file already has skills metadata attached.
    * @return {boolean} - file metadata status, true or false
    */
   async containsSkillsMetadata() {
@@ -48,8 +46,7 @@ class Box {
     const result = await client.files.deleteMetadata(this.fileId, client.metadata.scopes.GLOBAL, SKILLS_CARDS_TEMPLATE);
   }
   /**
-   * Create a new Rossum 'document'
-   * @return {Object} - new document object
+   * Download Document from Box using the Skills Kit FilesReader class.
    */
   async downloadFileFromBox() {
     // get box file read stream and write to local temp file
@@ -68,7 +65,7 @@ class Box {
   }
 
   /**
-   * Attach skills metadata to file
+   * Attach skills metadata to file using the Skills Kit skillsWriter class.
    */
   async attachMetadataCard(rossumJson) {
  
@@ -96,7 +93,7 @@ class Box {
 }
 
 /**
- * Helper function to format Skills metadata card
+ * Helper function to format Skills metadata card.
  * 
  * @param {Object} keywordTitle - title of box skill metadata card
  * @param {Object} rossumJson - all Rossum metadata

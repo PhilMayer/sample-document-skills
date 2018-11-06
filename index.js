@@ -1,41 +1,31 @@
 
-const BoxSDK = require('box-node-sdk');
-
-require('dotenv').config()
-const fs = require('fs')
-
 const Box = require('./Helpers/box.js')
 const Rossum = require('./Helpers/rossum.js');
 
-let triggeredEvent;
-let finalCallback;
-
 /**
- * This is the main function that the Lamba will call when invoked.
+ * This is the main function that the Lambda will call when invoked.
  */
-exports.handler = async (event, context, callback) => {
+exports.handler = async (triggeredEvent, context, callback) => {
   console.log('Event received. Huzzah!');
-  triggeredEvent = event;
-  finalCallback = callback
   
-  if (isValidEvent()) {
-    await processEvent();
+  if (isValidEvent(triggeredEvent)) {
+    await processEvent(triggeredEvent, callback);
   } else {
     console.log('Invalid event');
     callback(null, { statusCode: 200, body: 'Event received but invalid' });
   }
 };
 
-function isValidEvent() {
+function isValidEvent(triggeredEvent) {
   return triggeredEvent.body
 };
 
-async function processEvent() {
-  let { body } = triggeredEvent;
+async function processEvent(triggeredEvent, finalCallback) {
+  const { body } = triggeredEvent;
   const box = new Box(body);
 
   try {
-      // check if the file in question already has skills metadata attached
+      // Check if the file in question already has a Skills Card
       const containsMetadata = await box.containsSkillsMetadata()
 
       if (containsMetadata) {
@@ -52,9 +42,9 @@ async function processEvent() {
 
       finalCallback(null, { statusCode: 200, body: 'Custom Skill Success' });
       
-    } catch(error) {
-      console.log(error);
-      finalCallback(null, { statusCode: 200, body: 'Error' });
+    } catch (error) {
+        console.log(error);
+        finalCallback(null, { statusCode: 200, body: 'Error' });
     }
 }
 
@@ -66,7 +56,7 @@ async function sendToRossum(filePath) {
   console.log('Successfully uploaded to Rossum');
 
   await rossum.waitForDocumentExtraction(invoiceId);
-  console.log('Rossum data Extraction complete');
+  console.log('Rossum data extraction complete');
 
   const fields = await rossum.getDocumentFields(invoiceId);
   console.log('Fetched Rossum data');

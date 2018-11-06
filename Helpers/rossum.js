@@ -1,10 +1,10 @@
+const fs = require('fs');
 const axios = require('axios');
 const request = require('request');
-const fs = require('fs');
 
-const DOCUMENT_API = 'https://all.rir.rossum.ai/document';
-const MAX_RETRIES = 24;
+const MAX_RETRIES = 30;
 const WAIT_PERIOD = 5000;
+const DOCUMENT_API = 'https://all.rir.rossum.ai/document';
 
 const METADATA_TARGETS = [
     "invoice_id", "customer_id", "date_issue", "date_due", "terms", 
@@ -91,6 +91,7 @@ class Rossum {
                 if (curScore < field.score) {
                     curScore = field.score;
                     let content = field.value;
+                    
                     if (fieldName === "date_issue" || fieldName === "date_due") {
                         content = formatDate(content);
                     }
