@@ -11,13 +11,12 @@ const TEMP_PATH = '/tmp/temp.pdf'
 class Box {
 
   constructor(fileInfo) {
+    const {source, token} = JSON.parse(fileInfo);
+    
+    this.token = token;
+    this.fileId = source.id;
     this.filesReader = new FilesReader(fileInfo);
     this.skillsWriter = new SkillsWriter(this.filesReader.getFileContext());
-
-    const { source, token } = JSON.parse(fileInfo);
-    this.fileId = source.id;
-    this.readToken = token.read.access_token;
-    this.writeToken = token.write.access_token;
     this.boxSdk = new BoxSDK({ clientID: 'u9ycy4t2d2u0yq078zn0vaemprqqwcn3', clientSecret: 'k5nbP2WzwothXXtrmZJPYY9RtxyTKLzm' });
   }
 
@@ -26,7 +25,7 @@ class Box {
    * @return {boolean} - file metadata status, true or false
    */
   async containsSkillsMetadata() {
-    const client = this.boxSdk.getBasicClient(this.readToken);
+    const client = this.boxSdk.getBasicClient(this.token.read.access_token);
     let hasMetadata = false;
 
     try {
@@ -45,7 +44,7 @@ class Box {
   }
   
   async deleteExistingMetadata() {
-    const client = this.boxSdk.getBasicClient(this.writeToken);
+    const client = this.boxSdk.getBasicClient(this.token.write.access_token);
     const result = await client.files.deleteMetadata(this.fileId, client.metadata.scopes.GLOBAL, SKILLS_CARDS_TEMPLATE);
   }
   /**
@@ -97,11 +96,11 @@ class Box {
 }
 
 /**
- * Helper function to format individual skills metadata cards
+ * Helper function to format Skills metadata card
+ * 
  * @param {Object} keywordTitle - title of box skill metadata card
  * @param {Object} rossumJson - all Rossum metadata
  * @param {Object} properties - target keywords
- * @return {Object} - new document object
  */
 function returnCard(keywordTitle, rossumJson, properties) {
   const entries = [];

@@ -26,16 +26,12 @@ exports.handler = async (event, context, callback) => {
   }
 };
 
-/**
- * This is the main function that the Lambda will call when invoked.
- */
 function isValidEvent() {
   return triggeredEvent.body
 };
 
 async function processEvent() {
-
-  const { body } = triggeredEvent;
+  let { body } = triggeredEvent;
   const box = new Box(body);
 
   try {
@@ -49,17 +45,16 @@ async function processEvent() {
         
       const tempFilePath = await box.downloadFileFromBox();
       const rossumMetadata = await sendToRossum(tempFilePath)
-      console.log(rossumMetadata)
 
-      // process Rossum json obj and attach Box Skills card as metadata
+      // process Rossum json object and attach Box Skills card as metadata
       await box.attachMetadataCard(rossumMetadata);
-      console.log("Successfully attached skill metadata to Box file");
+      console.log('Successfully attached skill metadata to Box file');
 
-      finalCallback(null, { statusCode: 200, body: "Custom Skill Success" });
+      finalCallback(null, { statusCode: 200, body: 'Custom Skill Success' });
       
     } catch(error) {
       console.log(error);
-      finalCallback(null, { statusCode: 200, body: "Error" });
+      finalCallback(null, { statusCode: 200, body: 'Error' });
     }
 }
 
@@ -68,13 +63,13 @@ async function sendToRossum(filePath) {
 
   const uploadedFile = await rossum.uploadFiletoRossum(filePath);
   const invoiceId = uploadedFile.id;
-  console.log("Invoice ID:" + invoiceId);
+  console.log('Successfully uploaded to Rossum');
 
   await rossum.waitForDocumentExtraction(invoiceId);
   console.log('Rossum data Extraction complete');
 
   const fields = await rossum.getDocumentFields(invoiceId);
-  console.log('Data retrieved');
+  console.log('Fetched Rossum data');
 
   return rossum.processJSON(fields);
 }

@@ -41,7 +41,6 @@ class Rossum {
                     console.log(error.body);
                     reject(error);
                 }
-                console.log("ROSSUM STATUS CODE:" + JSON.stringify(response.statusCode))
                 resolve(JSON.parse(body));
             });
 

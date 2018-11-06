@@ -3,19 +3,6 @@ provider:
   name: aws
   runtime: nodejs8.10  
   region: us-east-1
-  # Environment:
-  #       Variables:
-  #         BOX_API_ENDPOINT: 'https://api.box.com/2.0'
-  #         BOX_CLIENT_ID: u9ycy4t2d2u0yq078zn0vaemprqqwcn3
-  #         BOX_CONFIG: >-
-  #           {boxAppSettings: {clientID:
-  #           "u9ycy4t2d2u0yq078zn0vaemprqqwcn3",clientSecret:
-  #           "k5nbP2WzwothXXtrmZJPYY9RtxyTKLzm",appAuth:{publicKeyID:
-  #           "rpuj25nu",privateKey: "-----BEGIN ENCRYPTED PRIVATE
-  #           KEY-----\nMIIFDjBABgkqhkiG9w0BBQ0wMzAbBgkqhkiG9w0BBQwwDgQIdByBHDqroB8CAggA\nMBQGCCqGSIb3DQMHBAhl0qZYXmf8jASCBMjRIb1AqQYrPM3WKa7Ug2ZIwI+ROBb9\nQ52Vdn8jiohEyFASngI+i8cW03CQ2Q41sEu0cjvERM/O5iywTRDQkFSr5t5elYAK\nSgK6R5AS8QaVY3AHOOKUQ5MKqLM0ivoogDdcI8NB51EOSQ4ZQlKCG+h4mnBgZsSm\n7ilo3WIbK4FhsYklNQmbB0fFk3npJrpbqIVbJ7NRLEDWkAkhDF2cq1zqNJB/KWJO\n78x+mvL9+sUhFgF2pb3NskpoPjFDXWVsf0DuDZSO7NhE08qkbw+4or9U+u8EtN55\nD65KdCwcxPX1Xky9Q56eLfWGVTvAHPBmS1DjP+kj+aqF2MeNygEmczh1Ispgkgoi\nf43YkRmvWwaE+7oe0bdsA9eit6kiG8uYYpikUR+Pj4icVgMn7ULfOT2Y+Lxz3URI\nlu7HbpYDLOrKYhLKCIdqykDg3XNzHMGd7qAxGuH2drChvqWJq80uyPV1bNXvlbDS\n/zF5+v4NFHILRKMTVkTSSwZioOSyTQ1MHPGbGB9Z10KrfKD0vyVIpmSWCdjU+rAa\nruTCXGQDbJXgFv/8COrSRKab+9JXGkHeMg3bXlPa0c/PUx0BcjE6+Ser+RnuzBCi\np+lH0HyP58sHju2VFCL+dNQIl3yUtQzyGkF4tvFwcYQ1CKpHva497ZaLJRXyb99P\n/zkwdp/gFc5OTYOOOca4Iv6WnJ3Qd5DT2c+PRnztr0IxdP286VLRVrC95VQYCfAn\nwaSMlx/biLwoYcGAJG8Z8c2R9YVnwhxPSWMDsd6lLr75GMG0hANQa8BlHgnYTIAm\n8znh5w2dzzat8W99129ShiCxbieHjKfcqkLlhsQOHqRZHT/SvwSJMs/wchyQtWO3\nhs5AOdoyt1UBbD7h3Yp0Fa4EcGlxCZFWlT9u7Mnk5KVxZj9iCGxk/UeXFfoTB7Wb\nfUBuiYlrNYkqCf1pY4lgInVMOT22XxKHcYrNYfT621SfL8ShKoXUxbknGsp0iWpl\nxgIvGDLoaQT2kECKMbnHofyylweGiktOHaZNwnPSgQk2Ll8s6VKi67UEpzpTMSW3\nmQ7XbNXJRPXpALKGjMvMCPC0gN9Aje0JtqTwV8LI6wy7tU30I6EuNg++mVzQHI4h\nfxm2TaeYI/5kZjtb260BR7BWp/mE0DHpMzDhTmXjCs2PFn9hTV1yS8KPkW+54WBY\nl08dyoct2DTU9yoycVgXojC8AL+OWzIqYkmFFJQ74RR8RZQYxVnOsepfkT/Ycbzj\nnVpPsgjPa0s2s6e1INzdHlKVRXCF5L1vrd3IAlQd7TZo8s42VDV4hxgwE1MdeveK\nkH+w7shWokiBAFbnejeHjK2TkVLm7RM+VocO60zj2mMYknd+y+7qQ/kLYMfWgEr/\n2XtzcCHONeWGac4IhiZhPtQT+2K7R7IjMu0ptj3LmVJTza9caMxy7CoLx6MyM2wk\nlLPFCqutVGtgbtmXaBSHFIuqsGeBEbpIBtxa4DM/krPs12Naq5vlRB97cfuHSDVJ\nTxpD3WF9cYsYr1wLrbEKvW7reND2EciZFz0yXyYb9gHIM9vHwlYvHGm+IEeHRJty\navd1QYWEVHtRvs00G68BYnRPG0IgbjvlsPZHJbI4WYCwSLmPNkE5x7m4FIXUPx53\n/u4=\n-----END
-  #           ENCRYPTED PRIVATE KEY-----\n",passphrase:
-  #           "e24d97210db3c45f9bc242b44b70f684"},enterpriseID: "22183900"}
-  #         ROSSUM_SECRET_KEY: Vytbz3XWQnEhmO34NU9xt6x4uAl2FnmmpgNfx8flMpiFY3ZfKGbMMZB7omLvygXi
 
 functions:
   index:
