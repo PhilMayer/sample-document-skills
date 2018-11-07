@@ -6,6 +6,7 @@ const MAX_RETRIES = 30;
 const WAIT_PERIOD = 5000;
 const DOCUMENT_API = 'https://all.rir.rossum.ai/document';
 
+// A complete list of possible fields can be found at https://rossum.ai/developers/api/field_types
 const METADATA_TARGETS = [
     "invoice_id", "customer_id", "date_issue", "date_due", "terms", 
     "amount_total", "amount_paid", "amount_due", "sender_name", 
@@ -49,7 +50,7 @@ class Rossum {
         })
     }
 
-    // Check status
+    // Check if Rossum model is done processing document
     async waitForDocumentExtraction(id) {
         let retryCount = 0;
         let status;
@@ -68,12 +69,21 @@ class Rossum {
         return doc.data.status;
     }
 
-    // Fetch fields present in invoice
+    // Fetch fields detected in document
     async getDocumentFields(id) {
         const doc = await axios.get(`${DOCUMENT_API}/${id}`, {headers: this.headers});
         return doc.data.fields;
     }
 
+    /**
+     * Return only the fields we care about.
+     * 
+     * Rossum will also return multiple results per field, so we keep track of the result 
+     * with the highest confidence score for each field (ie instead of ending up with 
+     * multiple results for amount_due, we take only the result that is most likely to 
+     * actually be the amount_due).
+     * 
+     */
     processJSON(rossumMetadata) {
         const metadata = {};
         let curField;
@@ -91,7 +101,7 @@ class Rossum {
                 if (curScore < field.score) {
                     curScore = field.score;
                     let content = field.value;
-                    
+
                     if (fieldName === "date_issue" || fieldName === "date_due") {
                         content = formatDate(content);
                     }

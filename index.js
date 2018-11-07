@@ -25,8 +25,7 @@ async function processEvent(triggeredEvent, finalCallback) {
   const box = new Box(body);
 
   try {
-      // Check if the file in question already has a Skills Card
-      const containsMetadata = await box.containsSkillsMetadata()
+      const containsMetadata = await box.containsSkillsMetadata() // Check if the file already has a Skills card
 
       if (containsMetadata) {
         console.log('Deleting existing Skills card.');
@@ -36,8 +35,7 @@ async function processEvent(triggeredEvent, finalCallback) {
       const tempFilePath = await box.downloadFileFromBox();
       const rossumMetadata = await sendToRossum(tempFilePath)
 
-      // process Rossum json object and attach Box Skills card as metadata
-      await box.attachMetadataCard(rossumMetadata);
+      await box.attachMetadataCard(rossumMetadata); // process Rossum json object and attach Box Skills card as metadata
       console.log('Successfully attached skill metadata to Box file');
 
       finalCallback(null, { statusCode: 200, body: 'Custom Skill Success' });
